@@ -7,45 +7,44 @@ import java.util.List;
 public class InMemoryTaskManager implements TaskManager {
     private static HashMap<Integer, Task> allTasks = new HashMap<>();
 
-
     private static HashMap<Integer, Task> taskMap = new HashMap<>();
     private static HashMap<Integer, Epic> epicMap = new HashMap<>();
     private static HashMap<Integer, SubTask> subtaskMap = new HashMap<>();
-    protected static List <Task> historyList = new ArrayList<>();
 
-    public List <Task> history(){
-        if (historyList.size() > 10) {
-            historyList.remove(0);
-        }
-        return historyList;
-    }
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     public Task get(Integer integer) {
         allTasks.clear();
         allTasks.putAll(taskMap);
         allTasks.putAll(epicMap);
         allTasks.putAll(subtaskMap);
-        historyList.add(allTasks.get(integer));
+        //System.out.println("sout of get "+allTasks.get(integer));
+        historyManager.addHistoryTask(allTasks.get(integer));
+
         return allTasks.get(integer);
     }
 
 
     public void getAllTasks() {
+
         allTasks.clear();
         allTasks.putAll(taskMap);
         allTasks.putAll(epicMap);
         allTasks.putAll(subtaskMap);
         for (Task t : allTasks.values()) {
+            historyManager.addHistoryTask(t);
             System.out.println(t);
         }
     }
 
     //For Tasks
     public void addTask(Task task) {
-        task.setId(Task.getId() + 1);
-        task.setTaskId(Task.getId());
-        taskMap.put(task.getTaskId(), task);
-        allTasks.put(task.getTaskId(), task);
+        if(!taskMap.containsValue(task)){
+            task.setGlobalId(Task.getGlobalId() + 1);
+            task.setTaskId(Task.getGlobalId());
+            taskMap.put(task.getTaskId(), task);
+        }
+        //allTasks.put(task.getTaskId(), task);
     }
 
     public void getTasks() {
@@ -71,10 +70,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     //For Epics
     public void addEpic(Epic epic) {
-        epic.setId(Task.getId() + 1);
-        epic.setTaskId(Task.getId());
+        epic.setGlobalId(Task.getGlobalId() + 1);
+        epic.setTaskId(Task.getGlobalId());
         epicMap.put(epic.getTaskId(), epic);
-        allTasks.put(epic.getTaskId(), epic);
+        //allTasks.put(epic.getTaskId(), epic);
         updateEpic(epic, epic.getTaskId());
     }
 
@@ -138,12 +137,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     //For Subs
     public void addSubs(SubTask subTask) {
-        subTask.setId(Task.getId() + 1);
-        subTask.setTaskId(Task.getId());
+        subTask.setGlobalId(Task.getGlobalId() + 1);
+        subTask.setTaskId(Task.getGlobalId());
         subTask.getParent().getSubs().add(subTask);
         updateEpic(subTask.getParent(), subTask.getParent().getTaskId());
         subtaskMap.put(subTask.getTaskId(), subTask);
-        allTasks.put(subTask.getTaskId(), subTask);
+        //allTasks.put(subTask.getTaskId(), subTask);
     }
 
     public void getSubs() {

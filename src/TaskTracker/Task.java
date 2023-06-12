@@ -1,17 +1,34 @@
 package TaskTracker;
 
+import java.util.Objects;
+
 public class Task {
-    private static int id = 0;
+    private static int globalId = 0;
     private String taskName;
     private String description;
     private int taskId;
     private STATUS status;
 
-    public void setId(int id){
-        Task.id = id;
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskName,description,taskId);
     }
-    public static int getId() {
-        return id;
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || this.getClass() != obj.getClass()) return false;
+        if(obj == this) return true;
+        Task task = (Task) obj;
+        return Objects.equals(taskName,task.taskName) &&
+                Objects.equals(description,task.description ) &&
+                Objects.equals(taskId,task.taskId );
+    }
+
+    public void setGlobalId(int id){
+        Task.globalId = id;
+    }
+    public static int getGlobalId() {
+        return globalId;
     }
 
     public String getTaskName() {
@@ -67,4 +84,7 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
+
+
 }
+
