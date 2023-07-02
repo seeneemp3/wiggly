@@ -1,30 +1,40 @@
 package TaskTracker;
 
 public class SubTask extends Task {
-    private Epic parent;
+    private Integer epicId;
 
-    public Epic getParent() {
-        return parent;
+    private final TaskType type = TaskType.SUBTASK;
+
+    public TaskType getType() {
+        return type;
     }
 
-    public void setParent(Epic parent) {
-        this.parent = parent;
+    public Integer getEpicId() {
+        return epicId;
     }
 
-    public SubTask(String taskName, String description, Epic epic) {
+    public void setEpicId(Integer epicId) {
+        this.epicId = epicId;
+    }
+
+    public SubTask(String taskName, String description, Integer epicId) {
         super(taskName, description);
-        this.parent = epic;
+        this.epicId = epicId;
+    }
+    public SubTask(Integer id, String taskName, String description, STATUS status, Integer epicId) {
+        super(id, taskName, description, status);
+        this.epicId = epicId;
     }
 
-    public SubTask(String taskName, String description, Epic epic, STATUS status) {
+    public SubTask(String taskName, String description, Integer epicId, STATUS status) {
         super(taskName, description, status);
-        this.parent = epic;
+        this.epicId = epicId;
     }
 
     @Override
     public String toString() {
         return "SubTask{" +
-                "parent=" + parent.getTaskName() +
+                "epicId=" + epicId +
                 ", taskName='" + getTaskName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", taskId=" + getTaskId() +

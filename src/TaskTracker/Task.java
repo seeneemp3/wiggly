@@ -8,20 +8,10 @@ public class Task {
     private String description;
     private int taskId;
     private STATUS status;
+    private final TaskType type = TaskType.TASK;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(taskName,description,taskId);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == null || this.getClass() != obj.getClass()) return false;
-        if(obj == this) return true;
-        Task task = (Task) obj;
-        return Objects.equals(taskName,task.taskName) &&
-                Objects.equals(description,task.description ) &&
-                Objects.equals(taskId,task.taskId );
+    public TaskType getType() {
+        return type;
     }
 
     public void setGlobalId(int id){
@@ -74,6 +64,12 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+    public Task(Integer id, String taskName, String description, STATUS status) {
+        this.taskName = taskName;
+        this.description = description;
+        this.status = status;
+        taskId = id;
+    }
 
     @Override
     public String toString() {
@@ -83,6 +79,20 @@ public class Task {
                 ", taskId=" + taskId +
                 ", status=" + status +
                 '}';
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskName,description,taskId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || this.getClass() != obj.getClass()) return false;
+        if(obj == this) return true;
+        Task task = (Task) obj;
+        return Objects.equals(taskName,task.taskName) &&
+                Objects.equals(description,task.description ) &&
+                Objects.equals(taskId,task.taskId );
     }
 
 

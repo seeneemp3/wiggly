@@ -8,7 +8,7 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final Map <Integer, CustomLList.Node<Task>> nodesMap = new HashMap<>();
-    private final CustomLList <Task> linkedTaskList = new CustomLList<>();
+    protected static CustomLList <Task> linkedTaskList = new CustomLList<>();
 
     @Override
     public void addHistoryTask(Task task) {
@@ -16,16 +16,14 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         if (task != null) {
             node = linkedTaskList.linkLast(task);
-            System.out.println("size of linklist "+linkedTaskList.size);
         }
         if (nodesMap.containsKey(task.getTaskId())) {
             linkedTaskList.removeNode(nodesMap.get(task.getTaskId()));
             nodesMap.put(task.getTaskId(), node);
         } else {
             nodesMap.put(task.getTaskId(), node);
-            //System.out.println("addHistoryTask "+nodesMap.get(task.getTaskId()));
-        }
 
+        }
     }
 
     @Override
@@ -37,13 +35,16 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public List<Task> getHistory() {
-        //System.out.println("size of linklist "+linkedTaskList.size);
+    public  List<Task> getHistory() {
         return linkedTaskList.getTasks();
-
     }
 
     private static class CustomLList <T extends Task>{
+
+        Node <T> head;
+        Node <T> tail;
+        private int size = 0;
+
         static class Node <T extends Task> {
             Node <T> next;
             Node <T> prev;
@@ -66,9 +67,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 return Objects.equals(node.task, task);
             }
         }
-        Node <T> head;
-        Node <T> tail;
-        private int size = 0;
 
         private Node <T> linkLast(Task task) {
             Node <T> newNode = new Node <T> (task);
@@ -89,6 +87,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         private List <Task> getTasks(){
             List<Task> taskList = new ArrayList<>();
             Node <T> node = head;
+            Node <T> node2 = tail;
             while (node != null){
                 taskList.add(node.task);
                 node = node.next;

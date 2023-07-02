@@ -10,43 +10,20 @@ public class RenameDir {
     static String whatDelete="123";
 
     public static void main(String[] args) throws Exception {
-        Path dir= Paths.get("/Users/user/Documents/rename/");
+        calculate();
+    }
+        public static void calculate(){
+        calculate1();
+        }
+    public static void calculate1(){
+        calculate2();
+    }
+    public static void calculate2(){
+        calculate3();
+    }public static void calculate3(){
+        System.out.println(10/0);
     }
 
-//
-//    public static void renameDirectories(Path dir) throws Exception {
-//
-//
-//        try (Stream<Path> files = Files.list(dir)) {
-//            files.map(i->
-//            {
-//                if (Files.isDirectory(i)) {
-//                    DirectoryStream<Path> dirStream = null;
-//                    try {
-//                        dirStream = Files.newDirectoryStream(i);
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    for (Path file : dirStream) {
-//                        try {
-//                            renameDirectories(i);
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//                }
-//
-//
-//                if(i.getFileName().toString().startsWith(whatDelete))
-//                {
-//                        Files.move(i,i.resolveSibling(dir.getFileName().toString().substring(whatDelete.length())));
-//
-//                }
-//                return;
-//            }
-//                    );
-//        } catch (IOException e) {
-//                    System.out.println("Error listing directory files: " + e.getMessage());
-//        }
-//    }
+
+
 }
